@@ -1,0 +1,42 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable pnpm from the packageManager field
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build the bundle and offline preview
+        run: pnpm build
+
+      - name: Run the test suite
+        run: pnpm test
+
+      - name: Pack the installable tarball
+        run: pnpm pack
+
+      - name: Publish the release with the packed bundle
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dsh-plugin-whale-girl-*.tgz
+          generate_release_notes: true

@@ -1,0 +1,113 @@
+{
+  "character": {
+    "name": "鲸鱼娘",
+    "credit": "ZipZipPipe",
+    "creditUrl": "https://space.bilibili.com/4168597",
+    "project": "vlln/whale-girl",
+    "projectUrl": "https://github.com/vlln/whale-girl",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2026 Sam Gao (vlln)",
+    "commit": "4fe5792c6f873c6b3a29dd12198ba47a397e17f3",
+    "modified": "统一裁切并压缩为插件用的单帧 PNG；状态映射见 states"
+  },
+  "states": {
+    "resting": {
+      "frames": [
+        "whale-girl/resting-0.png",
+        "whale-girl/resting-1.png",
+        "whale-girl/resting-2.png"
+      ],
+      "count": 3,
+      "fps": 2,
+      "playback": "blink",
+      "source": "idle"
+    },
+    "working": {
+      "frames": [
+        "whale-girl/working-0.png",
+        "whale-girl/working-1.png",
+        "whale-girl/working-2.png"
+      ],
+      "count": 3,
+      "fps": 3,
+      "playback": "loop",
+      "source": "working"
+    },
+    "waiting": {
+      "frames": [
+        "whale-girl/waiting-0.png"
+      ],
+      "count": 1,
+      "fps": 2,
+      "playback": "loop",
+      "source": "wait"
+    },
+    "celebrate": {
+      "frames": [
+        "whale-girl/celebrate-0.png",
+        "whale-girl/celebrate-1.png",
+        "whale-girl/celebrate-2.png"
+      ],
+      "count": 3,
+      "fps": 4,
+      "playback": "loop",
+      "source": "celebrate"
+    },
+    "sleeping": {
+      "frames": [
+        "whale-girl/sleeping-0.png",
+        "whale-girl/sleeping-1.png"
+      ],
+      "count": 2,
+      "fps": 1,
+      "playback": "loop",
+      "source": "sleep"
+    },
+    "error": {
+      "frames": [
+        "whale-girl/error-0.png",
+        "whale-girl/error-1.png"
+      ],
+      "count": 2,
+      "fps": 8,
+      "playback": "once",
+      "source": "error"
+    },
+    "drag": {
+      "frames": [
+        "whale-girl/drag-0.png"
+      ],
+      "count": 1,
+      "fps": 2,
+      "playback": "loop",
+      "source": "drag"
+    }
+  },
+  "order": [
+    "resting",
+    "working",
+    "waiting",
+    "celebrate",
+    "sleeping",
+    "error",
+    "drag"
+  ],
+  "counter": {
+    "viewBox": [
+      103.0,
+      114.0
+    ],
+    "bulb": [
+      74.7,
+      11.5,
+      82.7,
+      19.8
+    ],
+    "bulbTop": 3.2,
+    "anchor": [
+      78.7,
+      15.7
+    ],
+    "source": "light bulb in the working frames; the counter is drawn above bulbTop"
+  }
+}

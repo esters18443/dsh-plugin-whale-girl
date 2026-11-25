@@ -1,0 +1,72 @@
+{
+  "name": "dsh-plugin-whale-girl",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esters18443/dsh-plugin-whale-girl.git"
+  },
+  "homepage": "https://github.com/esters18443/dsh-plugin-whale-girl",
+  "bugs": {
+    "url": "https://github.com/esters18443/dsh-plugin-whale-girl/issues"
+  },
+  "packageManager": "pnpm@12.8.1",
+  "description": "Your whale-girl buddy in the DSH window — she works beside you, waits with you, and cheers every win. Click her to open the session switcher and jump to any session (drag a list edge to resize it), right-click her for scope, size and nap timing, and drag her anywhere in the window. No model requests, nothing uploaded; preferences stay in local storage.",
+  "icon": "./assets/icon.png",
+  "type": "module",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./typert": "./lib/typert.host.js",
+    "./remote": "./lib/remote.js",
+    "./locale/en.json": "./locale/en.json",
+    "./locale/zh.json": "./locale/zh.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "locale",
+    "docs",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "ASSETS-LICENSE.md",
+    "FONT-LICENSES.md",
+    "COMPATIBILITY.md",
+    "UPGRADE.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node tools/bridge-build.mjs && node tools/build.mjs",
+    "build:bridge": "node tools/bridge-build.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "zod": "4.4.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-api-gateway",
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ]
+    }
+  }
+}
