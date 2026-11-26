@@ -130,12 +130,8 @@ test('the sliced character sprites are attributed, sized and bundled, without so
   assert.doesNotMatch(read('lib/client.js'), /data:image\/svg\+xml;base64,/);
   assert.doesNotMatch(read('lib/client.js'), /\/Users\/|fetch\(|XMLHttpRequest|dsh-pet-research|bridge-build-probe/);
   assert.doesNotMatch(read('lib/remote.js'), /\/Users\/|dsh-pet-research|bridge-build-probe/);
-  const preview = read('preview/index.html');
-  assert.doesNotMatch(preview, /<script[^>]+src=|__PACKAGE_VERSION__/);
-  assert.ok(preview.includes(`DSH PLUGIN / ${manifest.version}`));
   assert.doesNotMatch(read('tools/build.mjs'), /tools\/fixtures|dsh-chevron\.svg/);
-  assert.ok(read('preview/runtime.js').includes('M 4 6 L 8 10 L 12 6'));
-  assert.ok(!read('lib/client.js').includes('M 4 6 L 8 10 L 12 6'));
+  assert.ok(!read('lib/client.js').includes('M 4 6 L 8 10 L 12 6'), 'the generic stand-in chevron never leaks into the production bundle');
 });
 test('manifest icon is a shippable, inert, package-relative image within DSH limits', () => {
   const icon = manifest.icon;

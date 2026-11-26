@@ -10,12 +10,12 @@ A little companion that lives inside your DeepSeek Harness (DSH) window—there 
 
 一只住在 DSH 窗口里的鲸鱼娘。陪你工作、等你决定，也陪你好好打个盹。
 
-**Current release 0.1.0** — the plugin carries the whale-girl name end to end: package `dsh-plugin-whale-girl`, entry ID `whale-girl`, English card "Whale Girl". The whale-girl art, the session switcher, and the stretchy drag pose are in; the pomodoro and the gentle-animations switch were removed by design. See the [release notes](CHANGELOG.md), the [upgrade notes](UPGRADE.md), and the [compatibility notes](COMPATIBILITY.md).
+**Current release 0.1.1** — the plugin carries the whale-girl name end to end: package `dsh-plugin-whale-girl`, entry ID `whale-girl`, English card "Whale Girl". The workspace-follow jump is in; the offline preview and the gentle-animations switch were removed by design. See the [release notes](CHANGELOG.md), the [upgrade notes](UPGRADE.md), and the [compatibility notes](COMPATIBILITY.md).
 
 ## Features
 
 - Drag, resize, hide, and restore your whale inside the DSH window.
-- Open the session list from the whale and jump straight to any session.
+- Open the session list from the whale and jump straight to any session; the left Workspace tree follows the jump (a group you folded unfolds and the row scrolls into view).
 - Choose **All sessions** or **Current session**, with a working-session count drawn just above the working pose's light bulb (above the character's frame, so it never covers the art).
 - Seven animated character states (resting, working, waiting, celebrating, sleeping, error, plus the upstream drag pose held while the whale is carried), each drawn frame by frame from the whale-girl sprite set.
 - A custom icon in the DSH plugin manager: the whale-girl waiting frame itself as `assets/icon.png`, scaled onto a rounded light plate — the shipped artwork, not a redraw.
@@ -51,7 +51,7 @@ After an update that changes Host or client modules, wait for current tasks to f
 
 ## Usage
 
-- **Click** the whale to open the session list, then pick a row to jump to that session; **drag** it to reposition.
+- **Click** the whale to open the session list, then pick a row to jump to that session; **drag** it to reposition. After a jump the left Workspace tree lands on that session: its group unfolds if you had folded it and the row moves to the middle of the tree when space allows. A collapsed sidebar stays collapsed, and a shell that reshapes its tree just skips the treatment.
 - Type in the list's filter box to narrow rows by title or Workspace. Sessions that need you or are running lead the list, then the most recently updated; the current session is marked. Hovering either edge of the list shows a resize cursor, and dragging it changes the width (280–520px, remembered locally).
 - **Right-click** to change session scope, size, and nap timing.
 - Use the restore button to bring back a hidden whale.
@@ -61,14 +61,14 @@ After an update that changes Host or client modules, wait for current tasks to f
 ## Compatibility and behavior
 
 - Originally developed for **DSH Desktop 0.1.6-alpha.2 on macOS arm64**. DSH is still evolving; other version/platform combinations are not universally certified.
+- The workspace-reveal treatment after a switcher jump reads the Workspace browser's own `data-row-key` row markers and header `aria-expanded` state, because DSH exposes no public navigation API for its search-style reveal. The row is centred in the tree viewport when space allows (clamped at the list ends). When those markers are absent the assist does nothing; the conversation switch always goes through the public `uiWorkspace` contract first.
 - The completion fix was checked against real DSH Gateway/Cordis modules, and the user confirmed celebration in the installed app. This does not claim exhaustive live testing of every concurrent-session, reconnect, cancellation or upgrade scenario.
 - From 0.2.0 the module is `dsh-plugin-whale-girl` and the entry ID is `whale-girl`. Earlier installs used `whale-pet` (since public 0.2.7) or `dsh-plugin-whale-pet` (0.2.6 and earlier) — both are legacy IDs that require migration; see the [upgrade notes](UPGRADE.md).
 - Completion uses live normal turn-end events. Intermediate assistant/tool messages, cancellation, disconnected history and work-count changes are not treated as successful completion.
-- The offline preview simulates completion; it validates rendering, not delivery of live DSH events.
 
 When reporting an issue in this repository, include DSH/plugin versions, session scope, and reproduction steps. Remove chat content, session identifiers, and other sensitive information.
 
-## Development and local preview
+## Development
 
 Use Node.js 22 or newer and the pnpm version pinned in the project manifest.
 
@@ -78,13 +78,7 @@ pnpm run build
 pnpm test
 ```
 
-The build regenerates the bridge contract and client, then creates an offline preview. Open this generated local file in a browser; no web server is needed:
-
-```text
-preview/index.html
-```
-
-The preview does not connect to DSH or call a model. Its generic chevron is independently drawn; the production interface uses DSH's public icon component.
+The build regenerates the bridge contract and the client bundle. Changes are verified by the portable Node test suite and by installing the built package into DSH directly — no offline preview page is shipped.
 
 ```sh
 # After a successful build and test run, create a local plugin package:

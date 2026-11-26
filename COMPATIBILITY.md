@@ -2,7 +2,7 @@
 
 ## Release and target environment
 
-- Release: the **0.1.0** initial release of this repository (whale-girl naming carried end to end; built on earlier local iterations and the public 0.2.x releases).
+- Release: the **0.1.1** build of this reinitialized repository (whale-girl naming carried end to end; built on earlier local iterations and the public 0.2.x releases).
 - Original compatibility target: **DSH Desktop 0.1.6-alpha.2 on macOS arm64**.
 - Development requires Node.js 22+ and the pnpm version declared in the project manifest.
 - This is a personal plugin, not an official DeepSeek product. A formal package release is not universal certification for every DSH version or operating system.
@@ -19,6 +19,7 @@ The user confirmed that normal-reply celebration appeared in the installed app a
 
 - Root overlay slot: `shell.overlay`.
 - Host React/ReactDOM and public UI icon references; no second React runtime or extracted DSH implementation is bundled.
+- Switcher jumps go through the public `uiWorkspace` openSession contract. Because DSH exposes no public navigation API for its search-style reveal, a bounded assist then lands the left Workspace tree on the jump: it reads the Workspace browser's own `data-row-key` row markers, clicks only a group header that reports `aria-expanded="false"`, centres the row in the tree viewport when space allows (clamped at the list ends), and degrades to a silent no-op on any other tree shape. A collapsed sidebar rail stays collapsed, and explicitly folded ancestors in the Workspace-tree grouping stay out of reach (untouched groups auto-expand on their own).
 - Root session catalog/status supplies work and waiting state independently of completion delivery.
 - A plugin-owned read-only Host service projects live turn boundaries through the existing authenticated connection.
 - No model calls, approval handling, external listening port, telemetry or runtime font/CDN downloads.
@@ -29,11 +30,11 @@ The user confirmed that normal-reply celebration appeared in the installed app a
 
 ## Tests versus installation
 
-The portable Node suite uses synthetic data and isolated components. It covers strict contracts, scope/capability access, aggregation, ordering, cancellation, reconnects, lifecycle cleanup, localization, fonts, packaging and migration planning. Its namespace fixture rejects undeclared access instead of exposing a permissive plain-object Remote.
+The portable Node suite uses synthetic data and isolated components. It covers strict contracts, scope/capability access, aggregation, ordering, cancellation, reconnects, lifecycle cleanup, localization, fonts, packaging and migration planning. Its namespace fixture rejects undeclared access instead of exposing a permissive plain-object Remote. Changes are verified by this suite plus direct installation into DSH; no offline preview page is shipped in this repository.
 
 Separate isolation experiments exercised actual installed Cordis, the Typert registry and Gateway with an in-memory carrier, including completion delivery into the pet state machine. The inspected installed Gateway package reported **0.1.7-alpha.1**; that identifies an SDK module used in the experiment, not an asserted version of every running GUI component. Archived alpha.2 contracts were also checked. Proprietary host fixtures are not distributed in this repository.
 
-The offline browser preview simulates state. Browser checks establish menu/rendering behavior, not delivery of real Host events. The real-app normal-completion confirmation does not replace further validation of concurrent sessions, reconnects, cancel/error or upgrades on other systems.
+Browser-level rendering and delivery of real Host events are verified by installing the built package into DSH directly. The real-app normal-completion confirmation does not replace further validation of concurrent sessions, reconnects, cancel/error or upgrades on other systems.
 
 ## Entry-ID migration
 
@@ -49,6 +50,6 @@ Earlier releases used other entry IDs (`whale-pet` since public 0.2.7; the modul
 
 ## UI and assets
 
-Native customizable selects and `corner-shape` rely on the target browser's support. Production uses the host's theme tokens and icon; the offline preview uses an independently drawn generic chevron.
+Native customizable selects and `corner-shape` rely on the target browser's support. Production uses the host's theme tokens and icon.
 
 Whale artwork and embedded copies retain their separate permission terms. See [artwork permission](ASSETS-LICENSE.md), [code license](LICENSE) and [font licenses](FONT-LICENSES.md).

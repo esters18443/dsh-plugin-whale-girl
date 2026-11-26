@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1 — 2026-11-26
+
+### Added
+
+- The left Workspace tree follows a switcher jump. After the whale opens a Session, its Workspace group unfolds when the user had folded it and the row moves to the middle of the tree viewport when space allows (clamped at the list ends) — the browser's own search-reveal treatment plus centring, which DSH does not yet expose as a public navigation API. The assist reads the Workspace browser's stable row markers, clicks only a header that reports `aria-expanded="false"`, and quietly does nothing when the markers are absent: a collapsed sidebar rail stays collapsed, ancestors folded in the Workspace-tree grouping are out of reach (untouched groups still auto-expand), and the conversation switch itself never depends on the assist.
+
+### Removed
+
+- The offline preview page (`src/preview.html`, generated `preview/`) and its two real-browser check tools (`tools/ui-browser-check.mjs`, `tools/release-browser-check.mjs`). Changes are verified by the portable Node test suite and by installing the built package into DSH directly, which is how this plugin is accepted in practice.
+
 ## 0.1.0 — 2026-11-25
 
 Initial release of the reinitialized repository. The plugin ships as **`dsh-plugin-whale-girl`** with entry ID **`whale-girl`** and the English card "Whale Girl".

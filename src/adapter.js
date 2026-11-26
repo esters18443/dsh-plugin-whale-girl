@@ -3,7 +3,8 @@ import { normalizeLanguage } from './i18n.js';
 import { SessionAggregate } from './global-state.js';
 import { observeGlobalEvents } from './bridge-client.js';
 import { sessionRows } from './session-list.js';
-/** Only this file knows DSH's 0.1.6-alpha.2 client contract. No private DOM/API routes. */
+import { createWorkspaceReveal, workspaceIdOfSession } from './workspace-reveal.js';
+/** Only this file knows DSH's client contract. Navigation goes through public services; the tree reveal (workspace-reveal.js) is the single feature-detected DOM assist. */
 export function readDshLanguage(locale) {
   try { return normalizeLanguage(locale?.getSnapshot?.().active); } catch { return 'en'; }
 }
@@ -139,10 +140,18 @@ export function createPlugin(require, assets, css, fonts, sprites) {
   return {
     inject: ['slots', 'sessions', 'connection', 'locale', 'remote'],
     apply(ctx) {
+      // The left Workspace tree follows a switcher jump: bounded, feature-detected,
+      // and cancelled with the plugin lifecycle when the shell provides one.
+      const reveal = createWorkspaceReveal();
+      try { ctx.effect?.(() => () => reveal.cancel(), 'whale-girl: workspace reveal assist'); } catch { /* the loop is bounded without disposal */ }
       // Workspace navigation is optional: a shell without it keeps the whale's older behaviour.
-      const openSession = id => {
+      const openSession = (id, workspaceId) => {
         if (typeof id !== 'string' || id === '') return;
-        try { ctx.get?.('uiWorkspace')?.openSession?.(id); } catch { /* A refused jump leaves the list open. */ }
+        let switched = false;
+        try { ctx.get?.('uiWorkspace')?.openSession?.(id); switched = true; } catch { /* A refused jump leaves the list open. */ }
+        // Only a switch that happened gets the tree treatment: scrolling to a
+        // row the shell refused to open would advertise a jump that never ran.
+        if (switched) { try { reveal.reveal(id, workspaceId); } catch { /* The switch already happened. */ } }
       };
       function useWhale(onScopeChange = () => {}, session = {}) {
         const element = React.useRef(null);
@@ -177,11 +186,13 @@ export function createPlugin(require, assets, css, fonts, sprites) {
         const catalog = useSessions(snapshot => snapshot);
         const statuses = useSessionStatus(map => map);
         const workspaces = useWorkspaces(state => state);
-        const latest = React.useRef({ catalog, statuses });
-        latest.current = { catalog, statuses };
+        const latest = React.useRef({ catalog, statuses, workspaces });
+        latest.current = { catalog, statuses, workspaces };
         const controller = React.useRef(null);
         const push = () => controller.current?.publish();
-        const [element, widget, icons] = useWhale(push, { select: openSession });
+        // The jump resolves the Workspace at click time, so the tree treatment
+        // always sees the membership the shell reports right now.
+        const [element, widget, icons] = useWhale(push, { select: id => openSession(id, workspaceIdOfSession(latest.current.workspaces, id)) });
         React.useEffect(() => {
           const connection = connectWhaleState(ctx, widget.current, () => latest.current);
           controller.current = connection;

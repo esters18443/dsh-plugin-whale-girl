@@ -8,7 +8,7 @@ const source = readFileSync(new URL('../src/widget.js', import.meta.url), 'utf8'
 const css = readFileSync(new URL('../src/pet.css', import.meta.url), 'utf8');
 
 // Minimal DOM fixture exercises the actual constructor/event handlers without a browser.
-// Native layout, pointer delivery and rendering are checked by release-browser-check.mjs.
+// Changes are verified by this suite plus direct installation into DSH.
 function fixture(t, language = 'en', session = {}, clock = { value: 1000 }, timers = null) {
   let document;
   class Element {

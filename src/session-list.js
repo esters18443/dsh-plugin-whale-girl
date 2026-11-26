@@ -1,5 +1,5 @@
 /**
- * Pure session projection shared by the live plugin, the offline preview and the tests.
+ * Pure session projection shared by the live plugin and the tests.
  * No DOM, no storage, no navigation: the widget renders whatever this returns.
  */
 

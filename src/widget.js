@@ -5,7 +5,7 @@ import { bubbleLayout } from './bubble-layout.js';
 import { attachBubbleSurface } from './bubble-surface.js';
 import { spriteFrom, initialFrame, advanceFrame, holdMs, isFinished, animates } from './sprites.js';
 
-/** Framework-independent UI shared by the real plugin and offline preview. */
+/** Framework-independent UI shared by the real plugin and the tests. */
 export class WhaleWidget {
   constructor(host, { assets, sprites, css, fonts, storage, language = 'en', now = () => Date.now(), random = Math.random, onView = () => {}, onScopeChange = () => {}, onSelectSession = () => {}, canOpenSessions = false } = {}) {
     this.host = host;

@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build the bundle and offline preview
+      - name: Build the bundle
         run: pnpm build
 
       - name: Run the test suite
